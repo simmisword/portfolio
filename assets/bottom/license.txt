@@ -1,0 +1,11 @@
+Model Information:
+* title:	WIP - Intertidal environment
+* source:	https://sketchfab.com/3d-models/wip-intertidal-environment-30999a9d2e1e4d06acd0e310170807ff
+* author:	Loïc Norgeot (https://sketchfab.com/norgeotloic)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "WIP - Intertidal environment" (https://sketchfab.com/3d-models/wip-intertidal-environment-30999a9d2e1e4d06acd0e310170807ff) by Loïc Norgeot (https://sketchfab.com/norgeotloic) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

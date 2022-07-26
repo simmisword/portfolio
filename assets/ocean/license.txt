@@ -1,0 +1,11 @@
+Model Information:
+* title:	ocean
+* source:	https://sketchfab.com/3d-models/ocean-56112ae2e55e45a4951362b323540349
+* author:	urrmet (https://sketchfab.com/urrmet)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "ocean" (https://sketchfab.com/3d-models/ocean-56112ae2e55e45a4951362b323540349) by urrmet (https://sketchfab.com/urrmet) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
