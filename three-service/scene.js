@@ -10,6 +10,9 @@ import { ImprovedNoise } from "three/examples/jsm/math/ImprovedNoise.js";
 
 import { Boat, Trash, PlasticParticles } from "./swimming-parts.js";
 
+import * as dat from "dat.gui";
+import { random } from "./utils.js";
+
 export class WaterScene {
   constructor() {
     this.sizes = {
@@ -17,14 +20,18 @@ export class WaterScene {
       height: window.innerHeight,
     };
 
+    this.gui = new dat.GUI();
+
     this.loader = new GLTFLoader();
 
     this.renderer = this.initRenderer();
-    document.body.appendChild(this.renderer.domElement);
+    document.getElementById("app").appendChild(this.renderer.domElement);
     this.scene = new THREE.Scene();
-    this.scene.fog = new THREE.FogExp2(0xffffff, 0.0001);
+    this.scene.fog = new THREE.FogExp2(0x786563, 0.003);
     this.camera = this.initCamera();
     this.controls = this.initControls();
+
+    this.worldSize = 1000;
 
     this.sun = new THREE.Vector3();
     this.sky = this.initSky();
@@ -39,19 +46,33 @@ export class WaterScene {
     this.initObjects();
 
     this.plasticParticles = new PlasticParticles();
+    console.log(this.plasticParticles);
     this.scene.add(this.plasticParticles.particles);
+
+    this.particlesControls = this.gui.addFolder("Plastic Particles");
+
+    this.particlesControls
+      .add(this.plasticParticles, "AMOUNTX")
+      .min(0)
+      .max(5000)
+      .step(10);
+
+    // const near = 80;
+    // const far = 200;
+    // const color = "transparent";
+    // this.scene.fog = new THREE.Fog(color, near, far);
   }
 
   initTerrain() {
-    const worldWidth = 256,
-      worldDepth = 256,
+    const worldWidth = 32,
+      worldDepth = 32,
       worldHalfWidth = worldWidth / 2,
       worldHalfDepth = worldDepth / 2;
     const data = this.generateHeight(worldWidth, worldDepth);
 
     const geometry = new THREE.PlaneGeometry(
-      7500,
-      7500,
+      this.worldSize,
+      this.worldSize,
       worldWidth - 1,
       worldDepth - 1
     );
@@ -75,7 +96,7 @@ export class WaterScene {
       geometry,
       new THREE.MeshBasicMaterial({ map: texture })
     );
-    mesh.position.set(0, -1000, 0);
+    mesh.position.set(0, -500, 0);
     mesh.rotation.y = Math.PI / 2;
     this.scene.add(mesh);
     return mesh;
@@ -213,6 +234,32 @@ export class WaterScene {
 
     console.log(water.material.opacity);
 
+    const vertices = [];
+
+    for (let i = 0; i < this.worldSize * this.worldSize; i++) {
+      const x = THREE.MathUtils.randFloatSpread(this.worldSize);
+      const y =
+        THREE.MathUtils.randFloatSpread(this.worldSize) - this.worldSize / 2;
+      const z = THREE.MathUtils.randFloatSpread(this.worldSize);
+
+      vertices.push(x, y, z);
+    }
+
+    this.planctonGeometry = new THREE.BufferGeometry();
+    this.planctonGeometry.setAttribute(
+      "position",
+      new THREE.Float32BufferAttribute(vertices, 3)
+    );
+
+    this.plactonMaterial = new THREE.PointsMaterial({ color: 0x888888 });
+
+    this.planctonPoints = new THREE.Points(
+      this.planctonGeometry,
+      this.plactonMaterial
+    );
+
+    this.scene.add(this.planctonPoints);
+
     this.scene.add(water);
     this.scene.add(water2);
 
@@ -241,7 +288,10 @@ export class WaterScene {
   }
 
   getNewWater() {
-    const waterGeometry = new THREE.PlaneGeometry(10000, 10000);
+    const waterGeometry = new THREE.PlaneGeometry(
+      this.worldSize,
+      this.worldSize
+    );
     return new Water(waterGeometry, {
       textureWidth: 512,
       textureHeight: 512,
@@ -331,6 +381,8 @@ export class WaterScene {
         }
       });
     }
+
+    this.plasticParticles.render();
     // stats.update();
   }
 
@@ -343,6 +395,23 @@ export class WaterScene {
 
     this.water.water.material.uniforms["time"].value += 1.0 / 60.0;
     this.water.water2.material.uniforms["time"].value += 1.0 / 60.0;
+    let pointsVertices = this.planctonPoints.geometry.attributes.position.array;
+    for (let i = 0; i < pointsVertices.length; i += 3) {
+      // console.log(this.planctonPoints.geometry.attributes.position.array[i]);
+      this.planctonPoints.geometry.attributes.position.array[i] += random(
+        -1,
+        1
+      );
+      this.planctonPoints.geometry.attributes.position.array[i + 1] += random(
+        -1,
+        1
+      );
+      this.planctonPoints.geometry.attributes.position.array[i + 2] += random(
+        -1,
+        1
+      );
+      // console.log(this.planctonPoints.geometry.attributes.position.array[i]);
+    }
 
     this.renderer.render(this.scene, this.camera);
   }

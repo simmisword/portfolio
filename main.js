@@ -24,5 +24,7 @@ window.addEventListener("keydown", function (event) {
 });
 
 window.addEventListener("keyup", function (event) {
-  waterScene.boat.stop();
+  if (waterScene.boat) {
+    waterScene.boat.stop();
+  }
 });

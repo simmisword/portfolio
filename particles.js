@@ -1,6 +1,6 @@
 import * as THREE from "three";
 
-import Stats from "./jsm/libs/stats.module.js";
+import Stats from "three/examples/jsm/libs/stats.module.js";
 
 const SEPARATION = 100,
   AMOUNTX = 50,
