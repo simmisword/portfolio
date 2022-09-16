@@ -1,19 +1,22 @@
-import { random } from "./utils";
 import * as THREE from "three";
 
-export class Trash {
-  constructor(_scene) {
-    _scene.scale.set(1.5, 1.5, 1.5);
-    _scene.position.set(random(-100, 100), -0.5, random(-100, 100));
+export class Particles {
+  constructor(width) {
+    this.amount = 5000;
+    this.group = THREE.Group();
+    // const map = new THREE.TextureLoader().load("sprite.png");
+    const material = new THREE.SpriteMaterial();
 
-    this.trash = _scene;
-  }
+    for (let i = 0; i < worldSize * worldSize; i++) {
+      const x = THREE.MathUtils.randFloatSpread(worldSize);
+      const y = THREE.MathUtils.randFloatSpread(worldSize) - worldSize / 2;
+      const z = THREE.MathUtils.randFloatSpread(worldSize);
 
-  update() {
-    let newX = this.trash.position.x - 0.01 + random(-0.01, 0.01);
-    let newY = -0.5 + random(-0.01, 0.01);
-    let newZ = this.trash.position.z - 0.01 + random(-0.01, 0.01);
-    this.trash.position.set(newX, newY, newZ);
+      this.planctonVertices.push(x, y, z);
+    }
+
+    const sprite = new THREE.Sprite(material);
+    scene.add(sprite);
   }
 }
 
@@ -98,30 +101,5 @@ export class PlasticParticles {
 
   setSeperation(seperation) {
     this.SEPARATION = seperation;
-  }
-}
-
-export class Boat {
-  constructor(_scene) {
-    _scene.scale.set(3, 3, 3);
-    _scene.position.set(5, 12.9, -20);
-
-    this.boat = _scene;
-    this.speed = {
-      vel: 0,
-      rot: 0,
-    };
-  }
-
-  update() {
-    if (this.boat) {
-      this.boat.rotation.y += this.speed.rot;
-      this.boat.translateX(this.speed.vel);
-    }
-  }
-
-  stop() {
-    this.speed.rot = 0;
-    this.speed.vel = 0;
   }
 }

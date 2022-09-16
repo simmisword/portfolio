@@ -1,12 +1,20 @@
 import "./style.css";
 
-import { WaterScene } from "./three-service/scene.js";
+import { WaterScene } from "./src/scene.js";
 
 let waterScene = new WaterScene();
 
 waterScene.animate();
 
-window.addEventListener("resize", waterScene.onWindowResize);
+window.addEventListener("resize", () => {
+  waterScene.sizes.width = window.innerWidth;
+  waterScene.sizes.height = window.innerHeight;
+
+  waterScene.camera.aspect = waterScene.sizes.width / waterScene.sizes.height;
+  waterScene.camera.updateProjectionMatrix();
+
+  waterScene.renderer.setSize(waterScene.sizes.width, waterScene.sizes.height);
+});
 
 window.addEventListener("keydown", function (event) {
   if (event.key == "u") {
@@ -20,6 +28,11 @@ window.addEventListener("keydown", function (event) {
   }
   if (event.key == "k") {
     waterScene.boat.speed.rot = -0.05;
+  }
+
+  if (event.key == " ") {
+    waterScene.controls.autoForward = !waterScene.controls.autoForward;
+    waterScene.controls.dragToLook = !waterScene.controls.dragToLook;
   }
 });
 
